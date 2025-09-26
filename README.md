@@ -12,4 +12,6 @@ Originally, starting at round 50, there are multipliers applied to any income yo
 
 Note that this mod does NOT cause trouble for Half-Cash, or Double Cash modes. It only modifies the threshold multipliers which are unrelated to those modes.
 
+Also allows setting the cash value in sandbox mode up to 9 999 999 999 999. (And alsos display of these values during gameplay)
+
 [![Requires BTD6 Mod Helper](https://raw.githubusercontent.com/gurrenm3/BTD-Mod-Helper/master/banner.png)](https://github.com/gurrenm3/BTD-Mod-Helper#readme)
