@@ -62,7 +62,6 @@ public class NoCashThresholdLimits : BloonsTD6Mod
                 {
                     double outVal = 0.0;
                     double.TryParse(inputField.m_Text.Replace(",", "").Replace("$", ""), out outVal);
-                    Log(System.ConsoleColor.Red, outVal);
                     InGame.instance.bridge.SetCash(outVal);
                 });
             }
@@ -77,7 +76,6 @@ public class NoCashThresholdLimits : BloonsTD6Mod
         private static void Postfix(CashDisplay __instance)
         {
             __instance.text.SetText("$" + ((ulong)InGame.instance.bridge.GetCash()).ToString("N0"));
-            Log(System.ConsoleColor.Cyan, InGame.instance.bridge.GetCash());
         }
     }
 
