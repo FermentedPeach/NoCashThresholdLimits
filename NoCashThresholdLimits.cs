@@ -1,17 +1,22 @@
 using BTD_Mod_Helper;
 using BTD_Mod_Helper.Extensions;
+using CommandLine;
 using HarmonyLib;
 using Il2CppAssets.Scripts.Models.Rounds;
 using Il2CppAssets.Scripts.Unity.UI_New.InGame;
 using Il2CppAssets.Scripts.Unity.UI_New.InGame.Stats;
 using Il2CppAssets.Scripts.Unity.UI_New.Popups;
+using Il2CppInterop.Runtime;
 using Il2CppInterop.Runtime.InteropTypes.Arrays;
+using Il2CppSystem.Runtime.Remoting.Messaging;
 using Il2CppTMPro;
 using MelonLoader;
 using NoCashThresholdLimits;
 using System;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
+using static Il2CppAssets.Scripts.Unity.UI_New.Popups.PopupScreen;
 
 [assembly: MelonInfo(typeof(NoCashThresholdLimits.NoCashThresholdLimits), ModHelperData.Name, ModHelperData.Version, ModHelperData.RepoOwner)]
 [assembly: MelonGame("Ninja Kiwi", "BloonsTD6")]
@@ -57,15 +62,30 @@ public class NoCashThresholdLimits : BloonsTD6Mod
                 var inputField = __instance.GetComponentInChildren<TMP_InputField>();
                 var button = __instance.GetComponentInChildren<Button>();
 
-                inputField.characterLimit = 19; //assume signed long (64 bit)
-                button.AddOnClick(() =>
+                foreach (var item in __instance.GetComponentsInChildren<Button>())
+                {
+                    if (item.name.Contains("Confirm"))
+                        button = item;
+                }
+
+                inputField.characterLimit = 19;
+                button.RemoveOnClickAction(0);
+
+                //Define the onClick and onEnter delegate/function
+                Function clickEnterDelegate = () =>
                 {
                     double outVal = 0.0;
                     double.TryParse(inputField.m_Text.Replace(",", "").Replace("$", ""), out outVal);
                     InGame.instance.bridge.SetCash(outVal);
-                });
+                    __instance.HidePopup();
+                };
+
+                button.SetOnClick(clickEnterDelegate); //click
+                __instance.confirmCallback = DelegateSupport.ConvertDelegate<ReturnCallback>(clickEnterDelegate); //enter
+
             }
         }
+
     }
 
     //Fix the cash display to display above 9 999 999 cash
