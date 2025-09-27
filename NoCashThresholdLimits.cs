@@ -75,7 +75,7 @@ public class NoCashThresholdLimits : BloonsTD6Mod
         [HarmonyPostfix]
         private static void Postfix(CashDisplay __instance)
         {
-            __instance.text.SetText("$" + ((ulong)InGame.instance.bridge.GetCash()).ToString("N0"));
+            __instance.text.SetText("$" + (InGame.instance.bridge.GetCash()).ToString("N0"));
         }
     }
 
